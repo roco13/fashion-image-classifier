@@ -41,15 +41,15 @@ function App() {
   const handleAnalyze = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    console.log("Canvas exists:", canvasRef.current);
+    //console.log("Canvas exists:", canvasRef.current);
     setAppState("loading");
-    console.log("canvasRef.current", canvasRef.current?.toDataURL());
+    // console.log("canvasRef.current", canvasRef.current?.toDataURL());
     try {
       const tensor = imageToTensor(canvas);
-      console.log("Tensor shape:", tensor.shape);
+      // console.log("Tensor shape:", tensor.shape);
 
       const results = await classifyImage(tensor);
-      console.log("Predictions in App:", results);
+      // console.log("Predictions in App:", results);
 
       //console.log("results", results);
       tensor.dispose(); // Clean up tensor memory
