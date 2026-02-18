@@ -75,7 +75,7 @@ function App() {
   return (
     <>
       <div className="app app-container">
-        <h1>Fashion Image Classifier</h1>
+        <h1>Fashion Image Classifier V2</h1>
         <p>Upload an image to classify clothing</p>
         <UploadArea onImageSelect={handleFileSelect} />
 
