@@ -85,8 +85,6 @@ export function categorizeCoarse(rawPredictions: Prediction[]): {
 
   const [topCategory, score] = sorted[0];
 
-  const total = Object.values(scores).reduce((a, b) => a + b, 0);
-
   return {
     category: topCategory as RetailCategory,
     confidence: score,
