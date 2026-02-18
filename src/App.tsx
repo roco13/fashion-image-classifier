@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import UploadArea from "./components/UploadArea";
 import ImagePreview from "./components/ImagePreview";
 import ImageCanvas from "./components/ImageCanvas";
 import ResultsPannel from "./components/ResultsPanel";
+import ModelInfo from "./components/ModelInfo";
 
 import { imageToTensor } from "./utils/imageToTensor";
 import { classifyImage } from "./utils/mobilenetClassifier";
@@ -18,6 +19,7 @@ function App() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   /* ---------- User uploads an image ---------- */
   const handleFileSelect = (file: File) => {
@@ -26,6 +28,14 @@ function App() {
     setPredictions([]);
     setError(null);
   };
+  useEffect(() => {
+    if (appState === "success" && resultsRef.current) {
+      resultsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [appState]);
 
   /* ---------- Run classification ---------- */
   const handleAnalyze = async () => {
@@ -86,20 +96,14 @@ function App() {
         )}
         {/* ---------- Results ---------- */}
         {appState === "success" && predictions.length > 0 && (
-          <div>
-            {/* <h2>Predictions</h2>
-
-            <ul>
-              {predictions.map((p) => (
-                <li key={p.label}>
-                  {p.label}: {(p.probability * 100).toFixed(1)}%
-                </li>
-              ))}
-            </ul> */}
+          <div ref={resultsRef}>
             <ResultsPannel predictions={predictions} />
           </div>
         )}
+
         {appState === "error" && <p>{error}</p>}
+
+        <ModelInfo />
       </div>
     </>
   );

@@ -21,6 +21,9 @@ a {
 a:hover {
   color: #535bf2;
 }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -125,6 +128,7 @@ button:focus-visible {
   background-color: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
   max-width: 500px;
+  animation: fadeIn 0.6s ease-in-out;
 }
 
 .results-title {
@@ -160,6 +164,49 @@ button:focus-visible {
   background-color: #111111;
   transition: width 0.4s ease;
 }
+
+.model-info {
+  margin-top: 60px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+  font-size: 14px;
+  color: #555;
+}
+
+.model-info summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  list-style: none;
+}
+.model-info summary::-webkit-details-marker {
+  display: none;
+}
+.model-info summary::after {
+  content: " ▼";
+  font-size: 12px;
+}
+.model-info[open] summary::after {
+  content: " ▲";
+}
+.model-info-content {
+  margin-top: 12px;
+  line-height: 1.6;
+  text-align: left;
+  padding: 0 12px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
