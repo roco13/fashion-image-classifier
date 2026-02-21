@@ -1,31 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface ImagePreviewProps {
-  file: File | null;
+  file: File;
+  imgRef: React.RefObject<HTMLImageElement | null>;
 }
 
-export default function ImagePreview({ file }: ImagePreviewProps) {
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+export default function ImagePreview({ file, imgRef }: ImagePreviewProps) {
+  const url = URL.createObjectURL(file);
 
   useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null);
-      return;
-    }
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-
     //clean up to prevent memory leaks
     return () => {
       URL.revokeObjectURL(url);
     };
-  }, [file]);
-
-  if (!previewUrl) return null;
+  }, [url]);
 
   return (
     <div className="image-preview">
-      <img src={previewUrl} alt="Uploaded preview" />
+      <img ref={imgRef} src={url} alt="Preview" />
     </div>
   );
 }

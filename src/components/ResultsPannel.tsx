@@ -1,4 +1,4 @@
-import type { Prediction } from "../utils/mobilenetClassifier";
+import type { Prediction } from "../utils/classifyFashionImage";
 import ConfidenceBar from "./ConfidenceBar";
 
 interface ResultsPanelProps {
@@ -13,7 +13,7 @@ export default function ResultsPannel({ predictions }: ResultsPanelProps) {
 
   return (
     <div className="results-panel">
-      <h2 className="results-title"> Classification Result</h2>
+      <h2 className="results-title"> Prediction</h2>
 
       <p className="results-category">
         <strong>Category:</strong> {top.label}

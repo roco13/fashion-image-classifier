@@ -1,14 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import UploadArea from "./components/UploadArea";
 import ImagePreview from "./components/ImagePreview";
-import ImageCanvas from "./components/ImageCanvas";
-import ResultsPannel from "./components/ResultsPanel";
-import ModelInfo from "./components/ModelInfo";
+import ResultsPannel from "./components/ResultsPannel";
 
-import { imageToTensor } from "./utils/imageToTensor";
-import { classifyImage } from "./utils/mobilenetClassifier";
-import type { Prediction } from "./utils/mobilenetClassifier";
-import { categorizeCoarse, refineCategory } from "./utils/fashionInterpreter";
+import { classifyFashionImage } from "./utils/classifyFashionImage";
+import type { Prediction } from "./utils/classifyFashionImage";
 
 /* ---------- App State Machine ---------- */
 type AppState = "idle" | "loading" | "success" | "error";
@@ -18,8 +14,8 @@ function App() {
   const [appState, setAppState] = useState<AppState>("idle");
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const imgRef = useRef<HTMLImageElement>(null);
 
   /* ---------- User uploads an image ---------- */
   const handleFileSelect = (file: File) => {
@@ -28,45 +24,23 @@ function App() {
     setPredictions([]);
     setError(null);
   };
-  useEffect(() => {
-    if (appState === "success" && resultsRef.current) {
-      resultsRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  }, [appState]);
 
   /* ---------- Run classification ---------- */
   const handleAnalyze = async () => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    //console.log("Canvas exists:", canvasRef.current);
-    setAppState("loading");
-    // console.log("canvasRef.current", canvasRef.current?.toDataURL());
-    try {
-      const tensor = imageToTensor(canvas);
-      // console.log("Tensor shape:", tensor.shape);
+    if (!imgRef.current) return;
 
-      const results = await classifyImage(tensor);
+    setAppState("loading");
+
+    try {
+      const results = await classifyFashionImage(imgRef.current);
       // console.log("Predictions in App:", results);
 
       //console.log("results", results);
-      tensor.dispose(); // Clean up tensor memory
 
-      const coarse = categorizeCoarse(results);
-      const refined = refineCategory(coarse.category, results);
-
-      setPredictions([
-        {
-          label: refined ?? coarse.category,
-          probability: coarse.confidence,
-        },
-      ]);
-
+      setPredictions(results);
       setAppState("success");
     } catch (err) {
-      console.error("Error analyzing image", err);
+      console.error("Classification error", err);
       setError("Failed to analyze image.");
       setAppState("error");
     }
@@ -75,14 +49,13 @@ function App() {
   return (
     <>
       <div className="app app-container">
-        <h1>Fashion Image Classifier V2</h1>
+        <h1>Fashion Image Classifier (Custom Model)</h1>
         <p>Upload an image to classify clothing</p>
         <UploadArea onImageSelect={handleFileSelect} />
 
         {file && (
           <>
-            <ImageCanvas file={file} canvasRef={canvasRef} />
-            <ImagePreview file={file} />
+            <ImagePreview file={file} imgRef={imgRef} />
             <p>{file.name}</p>
 
             <button
@@ -96,14 +69,14 @@ function App() {
         )}
         {/* ---------- Results ---------- */}
         {appState === "success" && predictions.length > 0 && (
-          <div ref={resultsRef}>
+          <div>
             <ResultsPannel predictions={predictions} />
           </div>
         )}
 
         {appState === "error" && <p>{error}</p>}
 
-        <ModelInfo />
+        {/* <ModelInfo /> */}
       </div>
     </>
   );
