@@ -14,12 +14,14 @@ function App() {
   const [appState, setAppState] = useState<AppState>("idle");
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isImageReady, setIsImageReady] = useState(false);
 
   const imgRef = useRef<HTMLImageElement>(null);
 
   /* ---------- User uploads an image ---------- */
   const handleFileSelect = (file: File) => {
     setFile(file);
+    setIsImageReady(false);
     setAppState("idle");
     setPredictions([]);
     setError(null);
@@ -55,13 +57,17 @@ function App() {
 
         {file && (
           <>
-            <ImagePreview file={file} imgRef={imgRef} />
+            <ImagePreview
+              file={file}
+              imgRef={imgRef}
+              onImageLoad={() => setIsImageReady(true)}
+            />
             <p>{file.name}</p>
 
             <button
               className="analyze-button"
               onClick={handleAnalyze}
-              disabled={appState === "loading"}
+              disabled={appState === "loading" || !isImageReady}
             >
               {appState === "loading" ? "Analyzing..." : "Analyze"}
             </button>
