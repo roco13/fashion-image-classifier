@@ -1,4 +1,4 @@
-# Fashion Image Classifier (Client-Side)
+# Fashion AI Frontend
 
 A browser-based clothing classifier built with:
 
