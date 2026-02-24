@@ -56,11 +56,13 @@ function App() {
 
         {file && (
           <>
-            <ImagePreview
-              file={file}
-              imgRef={imgRef}
-              onImageLoad={() => setIsImageReady(true)}
-            />
+            <div className="image-preview">
+              <ImagePreview
+                file={file}
+                imgRef={imgRef}
+                onImageLoad={() => setIsImageReady(true)}
+              />
+            </div>
             <p>{file.name}</p>
 
             <button
