@@ -2,9 +2,8 @@ import { useState, useRef } from "react";
 import UploadArea from "./components/UploadArea";
 import ImagePreview from "./components/ImagePreview";
 import ResultsPannel from "./components/ResultsPannel";
-
-import { classifyFashionImage } from "./utils/classifyFashionImage";
-import type { Prediction } from "./utils/classifyFashionImage";
+import { classifyFashionImage } from "./utils/apiClassifier";
+import type { Prediction } from "./utils/types";
 
 /* ---------- App State Machine ---------- */
 type AppState = "idle" | "loading" | "success" | "error";
@@ -29,12 +28,12 @@ function App() {
 
   /* ---------- Run classification ---------- */
   const handleAnalyze = async () => {
-    if (!imgRef.current) return;
+    if (!file) return;
 
     setAppState("loading");
 
     try {
-      const results = await classifyFashionImage(imgRef.current);
+      const results = await classifyFashionImage(file);
       // console.log("Predictions in App:", results);
 
       //console.log("results", results);
