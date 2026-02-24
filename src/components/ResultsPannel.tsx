@@ -1,4 +1,4 @@
-import type { Prediction } from "../utils/classifyFashionImage";
+import type { Prediction } from "../utils/types";
 import ConfidenceBar from "./ConfidenceBar";
 
 interface ResultsPanelProps {
