@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import UploadArea from "./components/UploadArea";
 import ImagePreview from "./components/ImagePreview";
 import ResultsPannel from "./components/ResultsPannel";
@@ -14,6 +14,7 @@ function App() {
   const [predictions, setPredictions] = useState<Prediction[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isImageReady, setIsImageReady] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -25,7 +26,14 @@ function App() {
     setPredictions([]);
     setError(null);
   };
-
+  useEffect(() => {
+    if (appState === "success" && resultsRef.current) {
+      resultsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [appState]);
   /* ---------- Run classification ---------- */
   const handleAnalyze = async () => {
     if (!file) return;
@@ -76,7 +84,7 @@ function App() {
         )}
         {/* ---------- Results ---------- */}
         {appState === "success" && predictions.length > 0 && (
-          <div>
+          <div ref={resultsRef}>
             <ResultsPannel predictions={predictions} />
           </div>
         )}
