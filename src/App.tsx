@@ -47,6 +47,7 @@ function App() {
       //console.log("results", results);
 
       setPredictions(results);
+      console.log("results set in App:", results);
       setAppState("success");
     } catch (err) {
       console.error("Classification error", err);

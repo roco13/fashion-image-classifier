@@ -15,5 +15,6 @@ export async function classifyFashionImage(file: File): Promise<Prediction[]> {
     throw new Error(`API request failed with status ${response.status}`);
   }
   const data = await response.json();
+  console.log("API response data:", data);
   return data.predictions;
 }

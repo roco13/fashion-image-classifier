@@ -9,6 +9,7 @@ export default function ResultsPannel({ predictions }: ResultsPanelProps) {
   if (!predictions || predictions.length === 0) {
     return null;
   }
+  console.log("Predictions in ResultsPannel:", predictions);
   const top = predictions[0];
 
   return (
@@ -20,10 +21,10 @@ export default function ResultsPannel({ predictions }: ResultsPanelProps) {
       </p>
       <div className="results-bars">
         <div className="attributes">
-          <p>Top category: {predictions[0].label}</p>
+          {/* <p>Top category: {predictions[0].label}</p>
           <p>Confidence: {predictions[0].probability}</p>
           <h3>Attributes</h3>
-          <span className="chip">{predictions[0].attributes.color}</span>
+          <span className="chip">{predictions[0].attributes.color}</span> */}
         </div>
         {/* {predictions.map((p) => (
           <ConfidenceBar
