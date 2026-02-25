@@ -1,5 +1,5 @@
 import type { Prediction } from "../utils/types";
-import ConfidenceBar from "./ConfidenceBar";
+// import ConfidenceBar from "./ConfidenceBar";
 
 interface ResultsPanelProps {
   predictions: Prediction[];
@@ -19,13 +19,19 @@ export default function ResultsPannel({ predictions }: ResultsPanelProps) {
         <strong>Category:</strong> {top.label}
       </p>
       <div className="results-bars">
-        {predictions.map((p) => (
+        <div className="attributes">
+          <p>Top category: {predictions[0].label}</p>
+          <p>Confidence: {predictions[0].probability}</p>
+          <h3>Attributes</h3>
+          <span className="chip">{predictions[0].attributes.color}</span>
+        </div>
+        {/* {predictions.map((p) => (
           <ConfidenceBar
             key={p.label}
             label={p.label}
             probability={p.probability}
           />
-        ))}
+        ))} */}
       </div>
     </div>
   );
