@@ -39,6 +39,7 @@ function App() {
     if (!file) return;
 
     setAppState("loading");
+    console.log("Analyzing image:", file.name);
 
     try {
       const results = await classifyFashionImage(file);
@@ -47,7 +48,7 @@ function App() {
       //console.log("results", results);
 
       setPredictions(results);
-      console.log("results set in App:", results);
+      console.log("Predictions set in state:", results);
       setAppState("success");
     } catch (err) {
       console.error("Classification error", err);
