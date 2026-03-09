@@ -184,4 +184,4 @@ Transfer learning was used to leverage ImageNet feature extraction while adaptin
 ## Author
 
 Rocio Fernandez-Giro  
-Front-End Developer building production-ready AI-powered full-stack applications
+Full-stack Developer building production-ready AI-powered full-stack applications
